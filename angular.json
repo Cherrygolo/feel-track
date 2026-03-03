@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "sa-frontend": {
+    "feel-track": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -53,7 +53,10 @@
             ],
             "styles": [
               "src/styles.scss"
-            ]
+            ],
+             "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            }
           },
           "configurations": {
             "production": {
@@ -83,10 +86,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sa-frontend:build:production"
+              "buildTarget": "feel-track:build:production"
             },
             "development": {
-              "buildTarget": "sa-frontend:build:development"
+              "buildTarget": "feel-track:build:development"
             }
           },
           "defaultConfiguration": "development"

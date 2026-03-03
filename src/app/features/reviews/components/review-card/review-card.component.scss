@@ -1,0 +1,22 @@
+.card {
+    background-color: $card-background;
+    padding: 1.5rem;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 6px $shadow-color;
+    font-weight: 600;
+
+    &.positive {
+        border-left: 6px solid $positive-color;
+        color: $positive-color;
+    }
+
+    &.negative {
+        border-left: 6px solid $negative-color;
+        color: $negative-color;
+    }
+
+    &.neutral {
+        border-left: 6px solid $neutral-color;
+        color: $neutral-color;
+    }
+}
