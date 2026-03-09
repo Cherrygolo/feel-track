@@ -1,15 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';  
 import { ReviewCardComponent } from '../../components/review-card/review-card.component';
 import { FAKE_REVIEWS } from '@test-data/fake-review-data';
+import { ReviewService } from '@features/reviews/services/review.service';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-review-list',
   imports: [
-    ReviewCardComponent
+    ReviewCardComponent,
+    AsyncPipe,
+    SpinnerComponent
   ],
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.scss',
 })
 export class ReviewListComponent {
-  protected readonly reviews = FAKE_REVIEWS;
+  private reviewService = inject(ReviewService);
+  loading = true;
+  reviews$ = this.reviewService.getAllReviews().pipe(
+    finalize(() => this.loading = false)
+  );
+  // protected readonly reviews = FAKE_REVIEWS;
 }

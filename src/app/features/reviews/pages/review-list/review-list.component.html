@@ -1,3 +1,11 @@
-@for (review of reviews; track review.id) {
-  <app-review-card [review]="review"></app-review-card>
+<h1>Avis existants</h1>
+@let reviews = reviews$ | async;
+@if (loading) {
+  <app-spinner [size]="60" message="Chargement des avis en cours"></app-spinner>
+} @else if (!reviews || reviews.length === 0) {
+  <p>Aucun avis trouvé.</p>
+} @else {
+  @for (review of reviews; track review.id) {
+    <app-review-card [review]="review"></app-review-card>
+  }
 }

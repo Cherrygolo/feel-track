@@ -1,0 +1,36 @@
+@import 'variables';
+
+.spinner-container {
+  display: flex;
+  
+  justify-content: center;
+  min-height: 200px;
+  /* Alignement vertical et horizontal du spinner et du message */
+  align-items: center;
+  flex-direction: column;
+  gap: 10px; // espace entre le spinner et le texte
+}
+
+.spinner {
+  border: 5px solid rgba(0, 0, 0, 0.1); // couleur de fond du spinner
+  border-top: 5px solid $primary-color; // couleur de la partie animée
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animation rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Message sous le spinner */
+.spinner-message {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
