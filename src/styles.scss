@@ -1,12 +1,98 @@
-@import 'variables';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-
+/* ------------------------------------------------------------
+   Global styles
+------------------------------------------------------------ */
 * {
   font-family: Roboto, Helvetica, sans-serif;
 }
 
 body {
-  background-color: $secondary-color;
-  margin: 0;
-  padding: 0;
+  @apply bg-secondary;
+}
+
+/* ------------------------------------------------------------
+   Base typography
+------------------------------------------------------------ */
+@layer base {
+
+  h1 {
+    @apply text-2xl font-semibold mb-4;
+  }
+
+  label {
+    @apply block mb-2 font-medium;
+  }
+
+}
+
+/* ------------------------------------------------------------
+   Reusable components
+------------------------------------------------------------ */
+@layer components {
+
+  /* Buttons */
+
+  .btn {
+    @apply font-medium py-2 px-4 rounded shadow
+           transition-colors duration-200
+           focus:outline-none focus:ring-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-white
+           hover:bg-accent
+           focus:ring-accent
+           disabled:opacity-50
+           disabled:cursor-not-allowed;
+  }
+
+
+  /* Inputs / textarea */
+
+  .standard-input {
+    @apply w-full px-4 py-2
+           border border-gray-300
+           rounded
+           focus:outline-none
+           focus:ring-2
+           focus:ring-primary
+           focus:border-primary;
+  }
+
+  /* Cards */
+
+  .card {
+    @apply bg-white shadow-md rounded-lg p-4 mb-4;
+  }
+
+  .card-title {
+    @apply text-lg font-semibold mb-2;
+  }
+
+  .card-body {
+    @apply text-gray-700;
+  }
+
+
+  /* Alerts */
+
+  .alert {
+    @apply px-4 py-3 rounded mb-4 text-white;
+  }
+
+  .alert-success {
+    @apply bg-green-500;
+  }
+
+  .alert-error {
+    @apply bg-red-500;
+  }
+
+  .alert-warning {
+    @apply bg-yellow-500;
+  }
+
 }

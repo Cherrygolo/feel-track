@@ -1,7 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';  
-import { MatButtonModule } from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon'
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ReviewCardComponent } from '../../components/review-card/review-card.component';
 import { ReviewService } from '@features/reviews/services/review.service';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
@@ -14,13 +12,19 @@ import { Review } from '@features/reviews/models/review.model';
     ReviewCardComponent,
     AsyncPipe,
     SpinnerComponent,
-    MatIconModule,
-    MatButtonModule
+    NgClass
   ],
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.scss',
 })
 export class ReviewListComponent {
+
+  filters = [
+    { value: 'ALL', label: 'Tous' },
+    { value: 'POSITIVE', label: '😊 Positif' },
+    { value: 'NEUTRAL', label: '😐 Neutre' },
+    { value: 'NEGATIVE', label: '😡 Négatif' }
+  ];
   
   private reviewService = inject(ReviewService);
   reviews$!: Observable<Review[]>;
@@ -60,6 +64,8 @@ export class ReviewListComponent {
   }
 
   onFilterChange(reviewType: string) {
+
+    console.log('Selected review type:', reviewType);
 
     // If the selected review type is the same as the current one, do nothing
     if (this.selectedReviewType === reviewType) {

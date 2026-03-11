@@ -1,9 +1,28 @@
-<header>
-    <nav class="navbar">
-    <div class="brand">
-      <span>FeelTrack</span>
+<header class="fixed top-0 left-0 w-full h-header z-50">
+  <nav class="flex items-center gap-8 px-8 h-full bg-nav-background text-white shadow-nav">
+
+    <div class="text-2xl font-bold mr-auto 
+                bg-gradient-to-r from-secondary to-accent 
+                bg-clip-text text-transparent">
+      FeelTrack
     </div>
-    <a routerLink="/reviews" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Avis</a>
-    <a routerLink="/reviews/new" routerLinkActive="active">Créer un avis</a>
+
+    <a
+      routerLink="/reviews"
+      routerLinkActive="text-nav-linkActive border-b-2 border-nav-linkActive font-semibold"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="transition-colors duration-200 hover:text-accent"
+    >
+      Avis
+    </a>
+
+    <a
+      routerLink="/reviews/new"
+      routerLinkActive="text-nav-linkActive border-b-2 border-nav-linkActive font-semibold"
+      class="transition-colors duration-200 hover:text-accent"
+    >
+      Créer un avis
+    </a>
+
   </nav>
 </header>

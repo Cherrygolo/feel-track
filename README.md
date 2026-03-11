@@ -129,7 +129,6 @@ src/
 │   └── shared/                # Composants et services partagés
 │
 ├── styles/                    # Styles globaux réutilisables
-│   └── _variables.scss        # Variables SCSS (couleurs, espacements, etc.)
 │
 ├── main.ts                    # Point d'entrée de l'application
 ├── index.html                 # Fichier HTML principal

@@ -1,10 +1,7 @@
-<div class="spinner-container">
+<div class="flex flex-col items-center justify-center gap-2 min-h-[200px]">
   <div 
-    class="spinner" 
-    [ngStyle]="{
-      'width.px': size, 
-      'height.px': size
-    }">
+    class="rounded-full border-4 border-gray-200 border-t-4 border-t-primary animate-spin box-shadow-md"
+    [ngStyle]="{ 'width.px': size, 'height.px': size }">
   </div>
-  <p class="spinner-message">{{ message }}</p>
+  <p class="text-gray-800 text-base font-medium text-center">{{ message }}</p>
 </div>

@@ -1,44 +1,32 @@
 <h1>Avis existants</h1>
 
-<div class="filters">
-  <button 
-  (click)="onFilterChange('ALL')" 
-  [class.active]="selectedReviewType === 'ALL'">
-    Tous
-  </button>
+<div class="mb-5 flex flex-wrap gap-2">
 
-  <button 
-  (click)="onFilterChange('POSITIVE')" 
-  [class.active]="selectedReviewType === 'POSITIVE'">
-    😊 Positif
-  </button>
+  @for (filter of filters; track filter.value) {
+  <button
+    (click)="onFilterChange(filter.value)"
+    [ngClass]="selectedReviewType === filter.value
+      ? 'filter-button bg-accent text-white border-primary'
+      : 'filter-button bg-white text-gray-700 border-gray-300'">
 
-  <button 
-  (click)="onFilterChange('NEUTRAL')" 
-  [class.active]="selectedReviewType === 'NEUTRAL'">
-    😐 Neutre
+    {{ filter.label }}
   </button>
+}
 
-  <button 
-  (click)="onFilterChange('NEGATIVE')" 
-  [class.active]="selectedReviewType === 'NEGATIVE'">
-    😡 Négatif
-  </button>
 </div>
-
 @let reviews = reviews$ | async;
 
 @if (loading) {
   <app-spinner [size]="60" message="Chargement des avis en cours"></app-spinner>
 } @else if (errorMessage) {
 
-  <div class="error">
-  <span class="error-message"><mat-icon>warning</mat-icon> {{ errorMessage }}</span>
-  <button mat-raised-button
-    class="retry-button"
+  <div class="flex flex-col items-center gap-4">
+  <span class="text-red-500">⚠ {{ errorMessage }}</span>
+  <button
+    class="btn btn-primary"
     [disabled]="loading"
     (click)="reloadReviews()">
-    <mat-icon>refresh</mat-icon> Réessayer
+    Réessayer
   </button>
 </div>
 
