@@ -1,1 +1,76 @@
-<p>Formulaire de création d'avis en construction...</p>
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-semibold mb-6 text-center">Donnez votre avis</h1>
+
+  <form class="space-y-4" [formGroup]="reviewForm" (ngSubmit)="submitReview()" >
+    
+    <!-- Required email -->
+    <div>
+      <label for="email">Email <span class="text-red-500">*</span></label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email"
+        formControlName="email"
+        required
+        placeholder="exemple@email.com"
+        class="standard-input"
+      />
+      @if(reviewForm.get('email')?.invalid && reviewForm.get('email')?.touched) {
+        <div class="text-red-500 text-sm">
+          Email requis et doit être valide
+        </div>
+      }
+    </div>
+
+    <!-- Optionnal phone -->
+    <div>
+      <label for="phone">Téléphone (optionnel)</label>
+      <input 
+        type="tel" 
+        id="phone" 
+        name="phone" 
+        formControlName="phone"
+        placeholder="06 ** ** ** **"
+        class="standard-input"
+      />
+      @if(reviewForm.get('phone')?.invalid && reviewForm.get('phone')?.touched) {
+         <div class="text-red-500 text-sm">
+          Téléphone invalide
+        </div>
+      }
+    </div>
+
+    <!-- Textual review -->
+    <div>
+      <label for="review">Votre avis</label>
+      <textarea 
+        id="review" 
+        name="review"
+        formControlName="review"
+        rows="5"
+        maxlength="1000"
+        required
+        placeholder="Écrivez votre avis ici..."
+        class="standard-input"
+      ></textarea>
+      @if (reviewForm.get('review')?.invalid && reviewForm.get('review')?.touched) {
+         <div class="text-red-500 text-sm">
+          Avis requis
+        </div>
+      }
+    </div>
+
+    <!-- Messages -->
+    @if (submitSuccess()) {
+      <div class="text-green-600 text-center">Merci pour votre avis !</div>
+    } @if (submitError()) {
+      <div class="text-red-600 text-center">{{ errorMessage }}</div>
+    }
+
+    <!-- Bouton submit -->
+    <button type="submit" class="btn btn-primary w-full" [disabled]="isSubmitButtonDisabled">
+      {{ submitButtonLabel }}
+    </button>
+
+  </form>
+</div>
