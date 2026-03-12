@@ -62,12 +62,12 @@
 
     <!-- Messages -->
     @if (submitSuccess()) {
-      <div class="text-green-600 text-center">Merci pour votre avis !</div>
+      <div class="text-green-600 text-center font-bold">Merci pour votre avis !</div>
     } @if (submitError()) {
-      <div class="text-red-600 text-center">{{ errorMessage }}</div>
+      <div class="text-red-600 text-center font-bold">{{ errorMessage }}</div>
     }
 
-    <!-- Bouton submit -->
+    <!-- Submit Button -->
     <button type="submit" class="btn btn-primary w-full" [disabled]="isSubmitButtonDisabled">
       {{ submitButtonLabel }}
     </button>

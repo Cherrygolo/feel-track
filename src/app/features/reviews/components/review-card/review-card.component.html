@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="sentimentClass">
+<div class="card" [ngClass]="[sentimentClass, isHighlight() ? 'highlight' : '']">
   <div class="badge"></div>
   <div class="content">
     <p class="author">{{ review.customer.email | maskEmail }}</p>

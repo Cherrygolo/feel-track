@@ -34,6 +34,6 @@
   <p>Aucun avis trouvé.</p>
 } @else {
   @for (review of reviews; track review.id) {
-    <app-review-card [review]="review"></app-review-card>
+    <app-review-card [review]="review" [highlight]="review.id === highlightReviewId"></app-review-card>
   }
 }

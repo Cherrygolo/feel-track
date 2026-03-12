@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ReviewCreateDto } from '@features/reviews/models/review-create.dto';
 import { ReviewService } from '@features/reviews/services/review.service';
+import { delay, finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-review-creation-form',
@@ -17,6 +19,7 @@ export class ReviewCreationFormComponent {
 
   private reviewService = inject(ReviewService);
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
 
   reviewForm = this.formBuilder.group({
     email: ['', { validators: [Validators.required, Validators.email] }],
@@ -38,8 +41,7 @@ export class ReviewCreationFormComponent {
       this.reviewForm.markAllAsTouched();
       return;
     } else {
-      console.log(this.reviewForm.value);
-
+      
       // DTO construction from form values to be sent to the backend
       const reviewDto: ReviewCreateDto = {
         text: this.reviewForm.value.review!,
@@ -48,25 +50,27 @@ export class ReviewCreationFormComponent {
           phone: this.reviewForm.value.phone || undefined,
         },
       };
-      console.log(reviewDto);
 
       this.isSubmitting.set(true);
       this.submitSuccess.set(false);
       this.submitError.set(false);
 
-      this.reviewService.postReview(reviewDto).subscribe({
-        next: (response) => {
-          console.log('Review submitted successfully:', response);
-          this.isSubmitting.set(false);
-          this.submitSuccess.set(true);
-        },
+      this.reviewService.postReview(reviewDto).pipe(
+        tap(() => this.submitSuccess.set(true)),
+        delay(1500),
+        tap((response) => {
+          this.router.navigate(['/reviews'], {
+            state: { reviewCreated: true, createdReviewId: response.id }
+          });
+        }),
+        finalize(() => this.isSubmitting.set(false))
+      ).subscribe({
         error: (error) => {
-          console.error('Error submitting review:', error);
-          this.isSubmitting.set(false);
           this.submitError.set(true);
-          this.errorMessage = error.userMessage ? `Erreur lors de l'envoi : ${error.userMessage}` : 'Une erreur est survenue lors de l\'envoi de votre avis.';
+          this.errorMessage = error.userMessage;
         }
       });
+    
     }
   }
 

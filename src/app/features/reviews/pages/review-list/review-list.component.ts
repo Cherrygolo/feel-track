@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { ReviewCardComponent } from '../../components/review-card/review-card.component';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { switchMap, catchError, finalize, of } from 'rxjs';
 import { ReviewService } from '@features/reviews/services/review.service';
+import { ReviewCardComponent } from '@features/reviews/components/review-card/review-card.component';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { BehaviorSubject, catchError, finalize, Observable, of, switchMap } from 'rxjs';
-import { Review } from '@features/reviews/models/review.model';
+
+type ReviewType = 'ALL' | 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
 
 @Component({
   selector: 'app-review-list',
@@ -19,68 +21,63 @@ import { Review } from '@features/reviews/models/review.model';
 })
 export class ReviewListComponent {
 
+  private reviewService = inject(ReviewService);
+
+  reviewType = signal<ReviewType>('ALL');
+
+  loading = true;
+  errorMessage = '';
+
   filters = [
     { value: 'ALL', label: 'Tous' },
     { value: 'POSITIVE', label: '😊 Positif' },
     { value: 'NEUTRAL', label: '😐 Neutre' },
     { value: 'NEGATIVE', label: '😡 Négatif' }
   ];
-  
-  private reviewService = inject(ReviewService);
-  reviews$!: Observable<Review[]>;
-  loading = false;
-  errorMessage = '';
-  
-  private reviewType$ = new BehaviorSubject<string>('ALL');
-  selectedReviewType = 'ALL';
 
-  ngOnInit(): void {
+  // highlight state after review creation
+  highlightReviewId: string | null = null;
 
-    // Initialize the reviews$ observable to react to changes in the review type
-    this.reviews$ = this.reviewType$.pipe(
-
-      switchMap(reviewType => {
-
-        this.errorMessage = '';
-        this.loading = true;
-
-        const request$ =
-          reviewType === 'ALL'
-            ? this.reviewService.getAllReviews()
-            : this.reviewService.getAllReviewsByType(reviewType);
-
-        return request$.pipe(
-          catchError((error) => {
-            this.errorMessage = `Erreur lors du chargement des avis : ${error.userMessage || 'Une erreur est survenue.'}`;
-            return of([]);
-          }),
-          finalize(() => this.loading = false)
-        );
-
-      })
-
-    );
-
+  constructor() {
+    const navigation = history.state;
+    if (navigation.reviewCreated) {
+      this.highlightReviewId = navigation.createdReviewId;
+      // Clear the history state to prevent unintended highlights on future navigations
+      window.history.replaceState({}, document.title);
+    }
   }
 
-  onFilterChange(reviewType: string) {
+  reviews$ = toObservable(this.reviewType).pipe(
 
-    console.log('Selected review type:', reviewType);
+    switchMap(type => {
 
-    // If the selected review type is the same as the current one, do nothing
-    if (this.selectedReviewType === reviewType) {
-      return;
-    }
+      this.loading = true;
+      this.errorMessage = '';
 
-    // Update the selected review type for UI purposes
-    this.selectedReviewType = reviewType;
+      const request$ =
+        type === 'ALL'
+          ? this.reviewService.getAllReviews()
+          : this.reviewService.getAllReviewsByType(type);
 
-    // Update the review type to trigger the BehaviorSubject stream
-    this.reviewType$.next(reviewType);
+      return request$.pipe(
+        catchError(error => {
+          this.errorMessage = `Erreur lors du chargement : ${error.userMessage}`;
+          return of([]);
+        }),
+        finalize(() => this.loading = false)
+      );
 
+    })
+
+  );
+
+  onFilterChange(type: ReviewType) {
+    if (this.reviewType() === type) return;
+    this.reviewType.set(type);
   }
 
   reloadReviews() {
-    this.reviewType$.next(this.selectedReviewType);
+    this.reviewType.set(this.reviewType());
   }
+
 }

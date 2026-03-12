@@ -44,3 +44,13 @@
 .card.neutral .badge {
   @apply bg-neutral;
 }
+
+@keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+// Apply fade-in animation when the highlight class is added
+.highlight {
+  animation: fadein 1.5s ease forwards;
+}
