@@ -1,7 +1,4 @@
 .filter-button {
   @apply px-3 py-2 border rounded-md
-         border-gray-300
-         transition-colors duration-200
-         hover:bg-gray-100 hover:text-gray-800
-         active:bg-accent active:text-white;
+         transition-colors duration-200; // transition for background and text color changes
 }
