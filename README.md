@@ -21,7 +21,7 @@ Application de gestion et de suivi des avis (reviews) construite avec Angular 21
 
 ### Fonctionnalités principales
 - 📝 Création d'avis avec formulaire intuitif
-- 📋 Affichage d'une liste d'avis
+- 📋 Affichage d'une liste d'avis filtrable par type (positif / négatif / neutre)
 - 🎨 Interface responsive et moderne, utilisant SCSS et TailwindCSS
 - 🔄 Gestion d'état réactive avec RxJS
 - 🔌 Communication avec l'API backend
