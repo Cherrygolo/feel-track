@@ -34,7 +34,9 @@
 } @else if (!reviews || reviews.length === 0) {
   <p>Aucun avis trouvé.</p>
 } @else {
+  <div class="grid gap-4">
   @for (review of reviews; track review.id) {
     <app-review-card [review]="review" [highlight]="review.id === highlightReviewId"></app-review-card>
   }
+  </div>
 }

@@ -1,5 +1,5 @@
 .card {
-  @apply flex items-start gap-4 p-6 mb-4 rounded shadow-md bg-card relative
+  @apply flex items-start gap-4 p-6 rounded shadow-md bg-card relative
   transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg;
 }
 
