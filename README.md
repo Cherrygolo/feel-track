@@ -5,6 +5,7 @@ Application de gestion et de suivi des avis (reviews) construite avec Angular 21
 ## 📋 Table des matières
 
 - [À propos](#à-propos)
+- [Démonstrations](#démonstrations)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
@@ -26,6 +27,11 @@ Application de gestion et de suivi des avis (reviews) construite avec Angular 21
 - 🔄 Gestion d'état réactive avec RxJS
 - 🔌 Communication avec l'API backend
 
+## Démonstrations
+
+### Création d’un avis
+![Création](docs/gifs/review-creation-demo.gif)
+
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé :
@@ -40,10 +46,7 @@ npm --version     # 11.x.x ou supérieur
 ng version        # Angular CLI: 21.1.4
 ```
 
-## Démonstrations
 
-### Création d’un avis
-![Création](docs/gifs/review-creation-demo.gif)
 
 ## Installation
 
