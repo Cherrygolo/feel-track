@@ -1,8 +1,10 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Review } from "../models/review.model";
-import { Observable } from "rxjs";
-import { ReviewCreateDto } from "../models/review-create.dto";
+import { Review, ReviewStats} from "../models/review.model";
+import { map, Observable } from "rxjs";
+import { ReviewCreateDto } from "../models/dto/create-review.dto";
+import { ApiReviewStats } from "../models/dto/api-review-stats.dto";
+import { mapReviewStats } from "../mappers/review.mapper";
 
 const API_URL = 'http://localhost:8080/api/review';
 
@@ -19,6 +21,12 @@ export class ReviewService {
 
   getAllReviewsByType(sentiment: string): Observable<Review[]> {
     return this.http.get<Review[]>(`${API_URL}?type=${sentiment}`);
+  }
+
+  getReviewStats(): Observable<ReviewStats> {
+    return this.http.get<ApiReviewStats>(`${API_URL}/stats`).pipe(
+      map(mapReviewStats)
+    );
   }
 
   postReview(dto: ReviewCreateDto): Observable<Review> {
