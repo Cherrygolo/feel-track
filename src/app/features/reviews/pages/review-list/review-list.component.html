@@ -1,42 +1,85 @@
-<h1>Avis existants</h1>
 
-<div class="mb-5 flex flex-wrap gap-2">
+<h1 class="mb-4">Avis existants</h1>
 
-  @for (filter of filters; track filter.value) {
-  <button
-    (click)="onFilterChange(filter.value)"
-    class="filter-button"
-    [ngClass]="reviewType() === filter.value
-      ? 'bg-accent text-white border-primary cursor-default'
-      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-gray-800'">
+<!-- GLOBAL LOADING -->
+@if (globalLoading()) {
 
-    {{ filter.label }}
-  </button>
+  <div class="flex flex-col gap-6">
+
+    <!-- Skeleton filters -->
+    <div class="flex flex-wrap gap-2">
+      @for (filter of filters; track filter.value) {
+        <div class="skeleton"></div>
+      }
+    </div>
+
+    <!-- Reviews spinner -->
+    <app-spinner
+      [size]="60"
+      message="Chargement des avis en cours">
+    </app-spinner>
+
+  </div>
+
 }
 
-</div>
-@let reviews = reviews$ | async;
+<!-- GLOBAL ERROR -->
+@else if (globalError()) {
 
-@if (loading) {
-  <app-spinner [size]="60" message="Chargement des avis en cours"></app-spinner>
-} @else if (errorMessage) {
+  <div class="flex flex-col items-center justify-center gap-4 p-10 text-center">
 
-  <div class="flex flex-col items-center gap-4">
-  <span class="text-red-500">⚠ {{ errorMessage }}</span>
-  <button
-    class="btn btn-primary"
-    [disabled]="loading"
-    (click)="reloadReviews()">
-    Réessayer
-  </button>
-</div>
+    <div class="text-red-500 text-lg font-medium">
+      ⚠ Une erreur est survenue
+    </div>
 
-} @else if (!reviews || reviews.length === 0) {
-  <p>Aucun avis trouvé.</p>
-} @else {
-  <div class="grid gap-4">
-  @for (review of reviews; track review.id) {
-    <app-review-card [review]="review" [highlight]="review.id === highlightReviewId"></app-review-card>
-  }
+    <div class="text-gray-600">
+      {{ globalError() }}
+    </div>
+
+    <button class="btn btn-primary" (click)="reloadAll()">
+      Réessayer
+    </button>
+
   </div>
+
+}
+
+<!-- SUCCESS -->
+@else {
+
+  <!-- FILTERS (stats skeleton handled internally now) -->
+  <div class="mb-5 flex flex-wrap gap-2">
+
+    @let stats = statsState.data();
+
+    @for (filter of filters; track filter.value) {
+      <button
+        (click)="onFilterChange(filter.value)"
+        class="filter-button"
+        [ngClass]="reviewType() === filter.value
+          ? 'bg-accent text-white border-primary cursor-default'
+          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-gray-800 active:text-primary'">
+
+        {{ filter.label }} ({{ stats?.[filter.value] }})
+      </button>
+    }
+
+  </div>
+
+  <!-- REVIEWS -->
+  @if (!reviewsState.data() || reviewsState.data()!.length === 0) {
+    <p>Aucun avis trouvé.</p>
+  } @else {
+
+    <div class="grid gap-4">
+      @for (review of reviewsState.data(); track review.id) {
+        <app-review-card
+          [review]="review"
+          [highlight]="review.id === highlightReviewId">
+        </app-review-card>
+      }
+    </div>
+
+  }
+
 }

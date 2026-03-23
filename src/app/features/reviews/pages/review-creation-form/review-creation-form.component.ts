@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReviewCreateDto } from '@features/reviews/models/review-create.dto';
+import { ReviewCreateDto } from '@features/reviews/models/dto/create-review.dto';
 import { ReviewService } from '@features/reviews/services/review.service';
 import { delay, finalize, tap } from 'rxjs';
 

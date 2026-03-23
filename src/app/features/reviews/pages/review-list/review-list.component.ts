@@ -1,16 +1,16 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { switchMap, catchError, finalize, of } from 'rxjs';
 import { ReviewService } from '@features/reviews/services/review.service';
 import { ReviewCardComponent } from '@features/reviews/components/review-card/review-card.component';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { ReviewType } from '@features/reviews/models/review.model';
+import { createAsyncState } from 'src/app/shared/utils/create-async-state';
 
 @Component({
   selector: 'app-review-list',
+  standalone: true,
   imports: [
     ReviewCardComponent,
-    AsyncPipe,
     SpinnerComponent,
     NgClass
   ],
@@ -23,8 +23,8 @@ export class ReviewListComponent {
 
   reviewType = signal<ReviewType>('ALL');
 
-  loading = true;
-  errorMessage = '';
+  // highlight state after review creation
+  highlightReviewId: string | null = null;
 
   filters = [
     { value: 'ALL', label: 'Tous' },
@@ -33,49 +33,56 @@ export class ReviewListComponent {
     { value: 'NEGATIVE', label: '😡 Négatif' }
   ];
 
-  // highlight state after review creation
-  highlightReviewId: string | null = null;
+  statsState = createAsyncState(() =>
+    this.reviewService.getReviewStats()
+  );
+
+  reviewsState = createAsyncState(() => {
+    const type = this.reviewType();
+
+    return type === 'ALL'
+      ? this.reviewService.getAllReviews()
+      : this.reviewService.getAllReviewsByType(type);
+  });
 
   constructor() {
+    // Initial loads
+    this.statsState.run();
+
+    effect(() => {
+      this.reviewType();
+      this.reviewsState.run();
+    });
+
+    // Clear the history state to prevent unintended highlights on future navigations
     const navigation = history.state;
     if (navigation.reviewCreated) {
       this.highlightReviewId = navigation.createdReviewId;
-      // Clear the history state to prevent unintended highlights on future navigations
       window.history.replaceState({}, document.title);
     }
   }
-
-  reviews$ = toObservable(this.reviewType).pipe(
-
-    switchMap(type => {
-
-      this.loading = true;
-      this.errorMessage = '';
-
-      const request$ =
-        type === 'ALL'
-          ? this.reviewService.getAllReviews()
-          : this.reviewService.getAllReviewsByType(type);
-
-      return request$.pipe(
-        catchError(error => {
-          this.errorMessage = `Erreur lors du chargement : ${error.userMessage}`;
-          return of([]);
-        }),
-        finalize(() => this.loading = false)
-      );
-
-    })
-
-  );
 
   onFilterChange(type: ReviewType) {
     if (this.reviewType() === type) return;
     this.reviewType.set(type);
   }
 
-  reloadReviews() {
-    this.reviewType.set(this.reviewType());
+  // Global derived states
+  globalLoading = computed(() =>
+    this.statsState.loading() || this.reviewsState.loading()
+  );
+
+  globalError = computed(() =>
+    this.statsState.error() || this.reviewsState.error()
+  );
+
+  isReady = computed(() =>
+    !this.globalLoading() && !this.globalError()
+  );
+
+  reloadAll() {
+    this.statsState.retry();
+    this.reviewsState.retry();
   }
 
 }
