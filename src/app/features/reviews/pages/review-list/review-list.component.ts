@@ -46,6 +46,7 @@ export class ReviewListComponent {
   });
 
   constructor() {
+    
     // Initial loads
     this.statsState.run();
 
@@ -54,13 +55,35 @@ export class ReviewListComponent {
       this.reviewsState.run();
     });
 
-    // Clear the history state to prevent unintended highlights on future navigations
+    // Handle navigation highlight (one-shot trigger)
     const navigation = history.state;
     if (navigation.reviewCreated) {
+      // Trigger highlight animation for created review which the ID is known
       this.highlightReviewId = navigation.createdReviewId;
+
+      // Clear history state to avoid re-trigger on navigation
       window.history.replaceState({}, document.title);
+
+      // Reset highlight after it has been consumed
+      this.resetHighlightAfterRender();
     }
   }
+
+  /**
+   * Reset highlight once reviews are rendered
+   */
+  private resetHighlightAfterRender() {
+    effect(() => {
+      const reviews = this.reviewsState.data();
+
+      if (reviews && this.highlightReviewId) {
+        setTimeout(() => {
+          this.highlightReviewId = null;
+        }, 2000);
+      }
+    });
+  }
+
 
   onFilterChange(type: ReviewType) {
     if (this.reviewType() === type) return;
