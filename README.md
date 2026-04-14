@@ -1,6 +1,8 @@
 # FeelTrack
 
-Application de gestion et de suivi des avis (reviews) construite avec Angular 21, utilisant une architecture modulaire et les standards modernes du framework.
+Frontend de l’application full stack FeelTrack (Angular + Spring Boot).
+
+FeelTrack est une application permettant de collecter et analyser des avis utilisateurs, avec catégorisation automatique des sentiments.
 
 ## 📋 Table des matières
 
@@ -16,7 +18,7 @@ Application de gestion et de suivi des avis (reviews) construite avec Angular 21
 
 ## À propos
 
-**FeelTrack** est une application web permettant de créer, afficher et gérer des avis sur différents services ou produits. Le projet utilise une architecture orientée fonctionnalités avec Angular 21 et des composants autonomes (standalone components).
+**FeelTrack** est une interface utilisateur permettant de gérer et visualiser des avis en temps réel. Le projet utilise une architecture orientée fonctionnalités avec Angular 21 et des composants autonomes (standalone components).
 
 > **ℹ️ Note** : Il s'agit de l'application **frontend** de FeelTrack. Elle communique avec le backend disponible à : [github.com/Cherrygolo/sa-backend](https://github.com/Cherrygolo/sa-backend)
 
