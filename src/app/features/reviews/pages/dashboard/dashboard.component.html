@@ -1,0 +1,43 @@
+@if (statsState.loading()) {
+
+  <div class="flex flex-col gap-6">
+    <app-spinner
+      [size]="60"
+      message="Chargement des statistiques en cours">
+    </app-spinner>
+  </div>
+
+}
+
+@else if (statsState.error()) {
+
+  <div class="flex flex-col items-center justify-center gap-4 p-10 text-center">
+
+    <div class="text-red-500 text-lg font-medium">
+      ⚠ Une erreur est survenue
+    </div>
+
+    <div class="text-gray-600">
+      {{ statsState.error() }}
+    </div>
+
+    <button class="btn btn-primary" (click)="statsState.retry()">
+      Réessayer
+    </button>
+
+  </div>
+
+}
+
+@else {
+
+  <div style="width: 400px">
+    <canvas
+      baseChart
+      [data]="pieChartData()"
+      [type]="'pie'"
+      [options]="pieChartOptions()">
+    </canvas>
+  </div>
+
+}

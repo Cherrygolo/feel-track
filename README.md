@@ -29,6 +29,13 @@ FeelTrack est une application permettant de collecter et analyser des avis utili
 - 🔄 Gestion d'état réactive avec RxJS
 - 🔌 Communication avec l'API backend
 
+### 📊 Dashboard analytique (v1)
+- 📉 Visualisation des avis sous forme de graphique en camembert (Chart.js / ng2-charts)
+- 🧠 Affichage des proportions avec tooltip enrichi (valeur + pourcentage)
+- 🏷️ Titre dynamique basé sur les données (ex : volume total d’avis)
+- 🎯 Lecture instantanée de la répartition des sentiments (POSITIF / NEUTRE / NÉGATIF)
+- 📈 Première analyse des données pour faciliter la compréhension des retours utilisateurs
+
 ## Démonstrations
 
 ### Consultation des avis avec filtrage par type
@@ -169,6 +176,8 @@ src/
 | **TypeScript** | ~5.9.2 | Langage de programmation |
 | **RxJS** | ~7.8.0 | Programmation réactive |
 | **SCSS** | - | Préprocesseur CSS |
+| **Chart.js** | 4.x | Visualisation des données (dashboard analytics) |
+| **ng2-charts** | - | Intégration Angular de Chart.js |
 | **TailwindCSS** | 3.4 | Utilitaires CSS rapides avec thème personnalisable
 | **Vitest** | - | Framework de test |
 | **Prettier** | - | Formatteur de code |
@@ -184,6 +193,7 @@ Cette application frontend communique avec le backend FeelTrack pour gérer les 
 Le frontend envoie des requêtes HTTP vers l'API backend pour :
 - Récupérer la liste des avis existants
 - Créer de nouveaux avis
+- Récupérer des statistiques sur les avis existants
 
 Assurez-vous que le serveur backend est en cours d'exécution pour que l'application fonctionne correctement.
 

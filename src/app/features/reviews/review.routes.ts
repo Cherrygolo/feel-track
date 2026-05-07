@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ReviewListComponent } from './pages/review-list/review-list.component';
 import { ReviewCreationFormComponent } from './pages/review-creation-form/review-creation-form.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const REVIEW_ROUTES: Routes = [
   {
@@ -10,5 +11,9 @@ export const REVIEW_ROUTES: Routes = [
   {
     path: 'new',
     component: ReviewCreationFormComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   }
 ];
