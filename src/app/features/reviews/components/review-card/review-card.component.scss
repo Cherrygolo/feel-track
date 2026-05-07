@@ -22,15 +22,15 @@
 /* Variations of card styles */
 
 .card.positive {
-  @apply border-l-[6px] border-positive bg-green-100;
+  @apply border-l-[6px] border-positive bg-positive bg-opacity-10;
 }
 
 .card.negative {
-  @apply border-l-[6px] border-negative bg-red-100;
+  @apply border-l-[6px] border-negative bg-negative bg-opacity-10;
 }
 
 .card.neutral {
-  @apply border-l-[6px] border-neutral bg-yellow-100;
+  @apply border-l-[6px] border-neutral bg-neutral bg-opacity-10;
 }
 
 .card.positive .badge {
