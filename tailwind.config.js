@@ -9,8 +9,8 @@ module.exports = {
         accent: "#fdc462",
         font: "#4B3F3F",
 
-        positive: "#28A745",
-        negative: "#D9534F",
+        positive: "#31cb55",
+        negative: "#e83c36",
         neutral: "#FFC107",
 
         nav: {
